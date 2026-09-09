@@ -1,0 +1,16 @@
+> macro brief_inline(text) <
+{{- text | default("") | trim | replace("\n", " ") -}}
+> endmacro <
+
+> macro requirement_level(level) <
+> if level == "required" <Required> elif level.conditionally_required <Conditionally Required - {{ level.conditionally_required }}> elif level.recommended <Recommended - {{ level.recommended }}> elif level == "recommended" <Recommended> elif level.opt_in <Opt-In - {{ level.opt_in }}> elif level == "opt_in" <Opt-In> else <{{ level }}> endif <
+> endmacro <
+
+> macro attribute_type(attr) <
+> if attr.type is mapping <Enum (> for member in attr.type.members <`{{ member.value }}`> if not loop.last <, > endif <> endfor <)> else <`{{ attr.type }}`> endif <
+> endmacro <
+
+> macro attribute_description(attr) <
+{{- attr.brief | default("") | trim | replace("\n", " ") -}}
+> if attr.note < {{ attr.note | trim | replace("\n", " ") }}> endif <
+> endmacro <

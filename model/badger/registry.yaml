@@ -1,0 +1,214 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/open-telemetry/weaver/refs/heads/main/schemas/semconv.schema.json
+groups:
+  - id: registry.badger
+    type: attribute_group
+    display_name: Badger attributes
+    brief: Attributes describing instrumented badgers and their sessions.
+    attributes:
+      - id: badger.id
+        type: string
+        stability: development
+        brief: A globally unique identifier assigned to the physical badger.
+        note: >-
+          This identifier remains stable across installation attempts. It is
+          entity identity and MUST NOT be copied to metric attributes.
+        examples: "badger-01J9ZQ3Y8FX6N5M4K2C7V1T0RA"
+      - id: badger.namespace
+        type: string
+        stability: development
+        brief: The namespace in which the badger's logical name is unique.
+        note: >-
+          Use a stable operational boundary such as a laboratory, garage, or
+          fleet. The namespace and name form a human-readable identity.
+        examples: "detached-garage"
+      - id: badger.name
+        type: string
+        stability: development
+        brief: The human-readable logical name of the badger.
+        note: >-
+          This name is not required to be globally unique; combine it with
+          badger.namespace.
+        examples: "meles-01"
+      - id: badger.instance.id
+        type: string
+        stability: development
+        brief: A unique identifier for one post-installation badger lifetime.
+        note: >-
+          Generate a new value for every session. A badger is consumed by a
+          session, so this value MUST NOT be used as a metric attribute.
+        examples: "8f5c2f42-6ba1-4f79-89b8-c3e5b7d91a24"
+      - id: badger.build_id
+        type: string
+        stability: development
+        brief: The identifier of the operating-system build installed on the badger.
+        note: >-
+          The value SHOULD identify an immutable build rather than a mutable
+          release channel.
+        examples: "vudu-6.6.13+ritual.4"
+      - id: badger.acquired_at
+        type: int
+        stability: development
+        brief: The badger acquisition time as Unix time in seconds.
+        note: >-
+          Record the best available acquisition time. Freshness enforcement
+          compares this value with the collector's session-admission time.
+        examples: 1712345678
+      - id: badger.freshness.window
+        type: int
+        stability: development
+        brief: The maximum allowed age in seconds when a collector admits a session.
+        note: >-
+          The value MUST be non-negative. On the first signal for a session, a
+          collector enforcing freshness MUST compare its receive time with
+          badger.acquired_at plus this window and reject the session when the
+          receive time is later.
+        examples: 21600
+      - id: badger.condition.declared
+        type: string
+        stability: development
+        brief: The operator's declared condition of the badger at acquisition.
+        note: >-
+          Preserve this claim for audit only. Implementations MUST NOT derive
+          decay or any other measurement from it.
+        examples: "good condition"
+      - id: badger.adapter.type
+        type:
+          members:
+            - id: duppy_cardbus
+              value: "duppy.cardbus"
+              stability: development
+              brief: A Duppy CardBus adapter.
+            - id: duppy_pci
+              value: "duppy.pci"
+              stability: development
+              brief: A Duppy PCI adapter.
+            - id: sits_ethernet
+              value: "sits.ethernet"
+              stability: development
+              brief: A SpiritInTheSky Ethernet adapter.
+            - id: sits_usb
+              value: "sits.usb"
+              stability: development
+              brief: A SpiritInTheSky USB adapter.
+        stability: development
+        brief: The adapter connecting the controller to the badger.
+        note: >-
+          Adapter type identifies the product interface. Record timing behavior
+          independently in badger.adapter.timing_class. The sits.usb adapter
+          MUST use the polled timing class.
+        examples: "duppy.cardbus"
+      - id: badger.adapter.timing_class
+        type:
+          members:
+            - id: bus
+              value: "bus"
+              stability: development
+              brief: Signals are observed directly on the host bus.
+            - id: polled
+              value: "polled"
+              stability: development
+              brief: Signals are observed by polling the adapter.
+        stability: development
+        brief: The timing behavior of the badger adapter.
+        note: >-
+          Polled adapters smear timestamps by at least one millisecond. A
+          polled session requires badger.timing.degraded=true on its root span.
+        examples: "polled"
+      - id: badger.controller.name
+        type: string
+        stability: development
+        brief: The name of the cyberspiritual controller program.
+        note: >-
+          Record the product name reported by the controller.
+        examples: "FleshGolem"
+      - id: badger.controller.version
+        type: string
+        stability: development
+        brief: The version of the cyberspiritual controller program.
+        note: >-
+          Record the version string as reported by the controller.
+        examples: "4.2.1"
+      - id: badger.host.scheduling
+        type:
+          members:
+            - id: preemptive
+              value: "preemptive"
+              stability: development
+              brief: The host can preempt a running task.
+            - id: message_passing
+              value: "message_passing"
+              stability: development
+              brief: The host schedules work through explicit messages.
+            - id: cooperative
+              value: "cooperative"
+              stability: development
+              brief: A running task retains control until it yields.
+        stability: development
+        brief: The scheduling discipline used by the badger host.
+        note: >-
+          Under cooperative scheduling, a task that does not yield cannot be
+          distinguished from a hung host, so consumers MUST NOT present blocked
+          time as per-task attribution. Under message passing, carry trace
+          context on the message and mirror it into badger.traceparent.
+        examples: "message_passing"
+      - id: badger.session.id
+        type: string
+        stability: development
+        brief: A unique identifier for the badger session.
+        note: >-
+          Generate this identifier before the sampling decision and retain it
+          for the complete post-installation lifetime.
+        examples: "27a84bd4-2b52-45d5-a970-5f23f2baf3cd"
+      - id: badger.traceparent
+        type: string
+        stability: development
+        brief: The W3C traceparent value physically carried by the badger.
+        note: >-
+          This attribute is an audit record of the value placed on the badger,
+          not a replacement for propagated span context. Recording it permits
+          comparison across hosts and message-passing controllers. It MUST NOT
+          be used to assign a parent to the root badger.session span.
+        examples: "00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01"
+      - id: badger.tracestate
+        type: string
+        stability: development
+        brief: The W3C tracestate value physically carried by the badger.
+        note: >-
+          Record the exact vendor state carried with badger.traceparent. Omit
+          this attribute when no vendor state is present.
+        examples: "vendorname=opaqueValue"
+      - id: badger.timing.degraded
+        type: boolean
+        stability: development
+        brief: Whether adapter polling degraded the session's timing fidelity.
+        note: >-
+          This value MUST be true when badger.adapter.timing_class is polled.
+          Consumers MUST refuse to render profiles from a degraded session.
+        examples: true
+      - id: badger.prelude.duration
+        type: int
+        stability: development
+        brief: The seconds from badger acquisition to session start.
+        note: >-
+          The prelude occurs before instrumentation exists. When
+          badger.prelude.timestamp_source is claimed, consumers MUST treat this
+          duration as a lower bound of unknown tightness.
+        examples: 1800
+      - id: badger.prelude.timestamp_source
+        type:
+          members:
+            - id: measured
+              value: "measured"
+              stability: development
+              brief: Both endpoints were observed by a reliable clock.
+            - id: claimed
+              value: "claimed"
+              stability: development
+              brief: At least one endpoint was supplied by an operator.
+        stability: development
+        brief: The provenance of the acquisition and session-start timestamps.
+        note: >-
+          Record the source even when badger.prelude.duration is omitted.
+          Claimed timestamps make an emitted duration a lower bound of unknown
+          tightness rather than a measured duration.
+        examples: "measured"

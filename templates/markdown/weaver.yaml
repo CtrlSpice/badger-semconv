@@ -1,0 +1,29 @@
+template_syntax:
+  block_start: ">"
+  block_end: "<"
+
+whitespace_control:
+  trim_blocks: true
+  lstrip_blocks: true
+
+templates:
+  - template: entities.md.j2
+    filter: >
+      semconv_signal("resource"; {})
+      | group_by(.root_namespace)
+      | map({ root_namespace: .[0].root_namespace, entities: . | sort_by(.id) })
+    application_mode: single
+    file_name: "badger/entities.md"
+
+  - template: spans.md.j2
+    filter: >
+      semconv_signal("span"; {})
+      | group_by(.root_namespace)
+      | map({ root_namespace: .[0].root_namespace, spans: . | sort_by(.id) })
+    application_mode: each
+    file_name: "badger/spans.md"
+
+  - template: metrics.md.j2
+    filter: semconv_grouped_metrics
+    application_mode: each
+    file_name: "badger/metrics.md"

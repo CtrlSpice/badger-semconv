@@ -1,0 +1,4 @@
+schema_url: https://ctrlspice.github.io/badger-semconv/schemas/0.1.0
+description: >-
+  OpenTelemetry semantic conventions for instrumented badgers.
+stability: development

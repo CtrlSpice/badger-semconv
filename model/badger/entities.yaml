@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/open-telemetry/weaver/refs/heads/main/schemas/semconv.schema.json
+groups:
+  - id: entity.badger
+    type: entity
+    name: badger
+    display_name: Badger
+    stability: development
+    brief: A badger running an instrumented post-installation session.
+    note: >-
+      Badger identity belongs to this entity. Instrumentations MUST associate
+      badger signals with the entity and MUST NOT duplicate identifying
+      attributes as metric attributes.
+    attributes:
+      - ref: badger.id
+        requirement_level: required
+        role: identifying
+      - ref: badger.namespace
+        requirement_level: required
+        role: identifying
+      - ref: badger.name
+        requirement_level: required
+        role: identifying
+      - ref: badger.instance.id
+        requirement_level: required
+        role: identifying
+      - ref: badger.build_id
+        requirement_level: required
+        role: descriptive
+      - ref: badger.acquired_at
+        requirement_level: required
+        role: descriptive
+      - ref: badger.freshness.window
+        requirement_level: required
+        role: descriptive
+      - ref: badger.condition.declared
+        requirement_level: recommended
+        role: descriptive
+      - ref: badger.adapter.type
+        requirement_level: required
+        role: descriptive
+      - ref: badger.adapter.timing_class
+        requirement_level: required
+        role: descriptive
+      - ref: badger.controller.name
+        requirement_level: required
+        role: descriptive
+      - ref: badger.controller.version
+        requirement_level: recommended
+        role: descriptive
+      - ref: badger.host.scheduling
+        requirement_level: required
+        role: descriptive

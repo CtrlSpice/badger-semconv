@@ -5,8 +5,8 @@
 
 This repository defines an independent OpenTelemetry semantic-convention
 registry for instrumented post-mortem badger systems. It standardizes badger
-entities, reanimation sessions, and enclosure measurements in a model validated
-by [Weaver].
+entities, reanimation sessions, profile interpretation, and enclosure
+measurements in a model validated by [Weaver].
 
 The operational domain is adapted from Lucy A. Snyder's 2004 article,
 ["Installing Linux on a Dead Badger: User's Notes"]. The article is not
@@ -20,8 +20,9 @@ This is not an official OpenTelemetry project.
 ## Read the docs
 
 Operational guidance and the generated reference are in
-[`docs/badger`](docs/badger/README.md). Weaver generates the entity, span, and
-metric pages from the YAML definitions in [`model/badger`](model/badger).
+[`docs/badger`](docs/badger/README.md). Weaver generates the entity, span,
+metric, and profile-attribute pages from the YAML definitions in
+[`model/badger`](model/badger).
 
 ## Registry
 
@@ -30,11 +31,14 @@ metric pages from the YAML definitions in [`model/badger`](model/badger).
 | Entity | `entity.badger` | Identity and operational properties of one instrumented specimen. |
 | Span | `span.badger.session` | Root span for the specimen's post-installation lifetime. |
 | Metric | `metric.badger.*` | Monotonic decay and enclosure environment measurements. |
+| Attribute group | `profile.badger`, `profile.badger.sample` | Profile- and sample-level interpretation attributes. |
 
 The registry keeps specimen identity on the `badger` entity rather than metric
 attributes. It also defines head-sampling, degraded-timing, freshness,
 trace-context audit, scheduling, and decay requirements for the reanimated
-runtime.
+runtime. Weaver v0.26.1 has no first-class Profiles group type; the
+`profile.badger` groups define attribute applicability while the native OTLP
+Profiles data model defines the signal.
 
 ## Wildlife and containment
 

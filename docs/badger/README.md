@@ -1,19 +1,22 @@
 # Badger Semantic Conventions
 
 The badger registry describes one instrumented badger entity, its root session
-span, and the measurements needed to operate its enclosure. The detailed pages
-are generated from the registry model:
+span, the profiles collected during that session, and the measurements needed
+to operate its enclosure. The detailed pages are generated from the registry
+model:
 
 - [Entity](entities.md)
 - [Span](spans.md)
 - [Metrics](metrics.md)
+- [Profiles](profiles.md)
 
 ## Signal model
 
-Every session consumes one badger. Badger identity therefore belongs to the
-`badger` entity and never to metric attributes: using `badger.instance.id` as a
-label would create one permanent series per session. Spans and metrics declare
-an entity association instead.
+Every session consumes one badger. `badger.id` and `badger.instance.id` jointly
+identify its post-installation runtime; `badger.namespace` and `badger.name` are
+descriptive aliases. Identity belongs to the `badger` entity and never to metric
+attributes: using `badger.instance.id` as a label would create one permanent
+series per session. Spans and metrics declare an entity association instead.
 
 The root `badger.session` span begins only after installation. Sampling is a
 head decision made when that span starts. The elapsed time before the span,
@@ -24,7 +27,8 @@ from acquisition through installation, is represented by
 
 A polled adapter smears timestamps by at least one millisecond. Such a session
 sets `badger.timing.degraded=true`; consumers may display its spans but must not
-render a profile from its sampled signals.
+render a profile from its sampled signals. The [Profiles](profiles.md) page
+defines the profile- and sample-level interpretation attributes.
 
 Scheduling discipline controls which analysis is defensible. Cooperative hosts
 cannot distinguish a task that failed to yield from a hung machine, so blocked

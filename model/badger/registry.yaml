@@ -32,9 +32,17 @@ groups:
       - id: badger.instance.id
         type: string
         stability: development
-        brief: A unique identifier for one post-installation badger lifetime.
-        note: >-
-          Generate a new value for every session. A badger is consumed by a
+        brief: An identifier for one post-installation lifetime of a physical badger.
+        note: |-
+          The component that starts the root `badger.session` span MUST generate
+          this value once before the first signal for the session and retain it
+          for the complete post-installation lifetime. It MUST distribute the
+          same value to every observer of that runtime; observers MUST NOT
+          generate independent values. An observer that cannot obtain both
+          `badger.id` and `badger.instance.id` MUST NOT emit `entity.badger`.
+
+          The value MUST be unique within the associated `badger.id`; the pair
+          identifies one post-installation runtime. A badger is consumed by a
           session, so this value MUST NOT be used as a metric attribute.
         examples: "8f5c2f42-6ba1-4f79-89b8-c3e5b7d91a24"
       - id: badger.build_id
@@ -128,6 +136,32 @@ groups:
         note: >-
           Record the version string as reported by the controller.
         examples: "4.2.1"
+      - id: badger.control.state
+        type:
+          members:
+            - id: controlled
+              value: "controlled"
+              stability: development
+              brief: >-
+                The configured controller affirmatively reports active control
+                for this observation.
+            - id: uncontrolled
+              value: "uncontrolled"
+              stability: development
+              brief: >-
+                The configured controller affirmatively reports no active
+                control for this observation.
+        stability: development
+        brief: The reported control state of the badger for one profile observation.
+        note: >-
+          Record this attribute only from a definitive control-status report
+          emitted by the configured controller for the same observation.
+          Conforming producers MUST emit only `controlled` or `uncontrolled` and
+          MUST NOT infer either value from controller configuration, process
+          presence or absence, or an earlier observation. Omit the attribute
+          when no definitive report exists. Consumers MUST treat every other
+          value as unknown.
+        examples: "controlled"
       - id: badger.host.scheduling
         type:
           members:

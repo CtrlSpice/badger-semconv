@@ -7,19 +7,20 @@ groups:
     stability: development
     brief: A badger running an instrumented post-installation session.
     note: >-
-      Badger identity belongs to this entity. Instrumentations MUST associate
-      badger signals with the entity and MUST NOT duplicate identifying
-      attributes as metric attributes.
+      badger.id and badger.instance.id jointly identify one post-installation
+      runtime on one physical badger. Instrumentations MUST associate badger
+      signals with this entity and MUST NOT duplicate identifying attributes as
+      metric attributes.
     attributes:
       - ref: badger.id
         requirement_level: required
         role: identifying
       - ref: badger.namespace
         requirement_level: required
-        role: identifying
+        role: descriptive
       - ref: badger.name
         requirement_level: required
-        role: identifying
+        role: descriptive
       - ref: badger.instance.id
         requirement_level: required
         role: identifying

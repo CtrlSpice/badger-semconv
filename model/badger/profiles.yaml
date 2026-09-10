@@ -1,0 +1,48 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/open-telemetry/weaver/refs/heads/main/schemas/semconv.schema.json
+groups:
+  - id: profile.badger
+    type: attribute_group
+    brief: Attributes governing interpretation of a profile collected from a badger.
+    note: |-
+      This is an attribute applicability group, not a first-class Profiles
+      signal definition. Weaver v0.26.1 does not define a `profile` group type.
+
+      Attach these attributes to the OTLP `Profile` through
+      `Profile.attribute_indices`. Do not repeat them on individual `Sample`
+      messages.
+
+      `badger.timing.degraded` MUST be true when the associated badger uses a
+      polled adapter and MUST agree with the root `badger.session` span when both
+      values are present. Consumers MUST refuse to render a degraded profile.
+
+      `badger.host.scheduling` MUST equal the associated badger entity value.
+      Under cooperative scheduling, consumers MUST NOT present blocked time as
+      per-task attribution.
+    attributes:
+      - ref: badger.timing.degraded
+        requirement_level:
+          conditionally_required: If `badger.adapter.timing_class` is `polled`.
+      - ref: badger.host.scheduling
+        requirement_level:
+          conditionally_required: If the profile measures blocked or off-CPU time.
+
+  - id: profile.badger.sample
+    type: attribute_group
+    brief: Attributes describing individual profile samples from a badger.
+    note: |-
+      This is an attribute applicability group, not a first-class Profiles
+      signal definition. Attach these attributes to the OTLP `Sample` through
+      `Sample.attribute_indices`; Weaver v0.26.1 does not enforce this placement.
+
+      When collecting `badger.control.state`, producers MUST partition
+      observations by directly reported state before forming OTLP `Sample`
+      messages. Samples representing known-state observations MUST carry the
+      corresponding value; samples representing unknown-state observations
+      MUST omit the attribute. Observations with the same
+      `{stack_index, set_of(attribute_indices), link_index}` identity SHOULD be
+      combined by appending values and timestamps, including when a state recurs
+      after another state.
+    attributes:
+      - ref: badger.control.state
+        requirement_level:
+          recommended: If a definitive per-observation control-status report is available.

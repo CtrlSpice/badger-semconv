@@ -128,6 +128,32 @@ groups:
         note: >-
           Record the version string as reported by the controller.
         examples: "4.2.1"
+      - id: badger.control.state
+        type:
+          members:
+            - id: controlled
+              value: "controlled"
+              stability: development
+              brief: >-
+                The configured controller affirmatively reports active control
+                for this observation.
+            - id: uncontrolled
+              value: "uncontrolled"
+              stability: development
+              brief: >-
+                The configured controller affirmatively reports no active
+                control for this observation.
+        stability: development
+        brief: The reported control state of the badger for one profile observation.
+        note: >-
+          Record this attribute only from a definitive control-status report
+          emitted by the configured controller for the same observation.
+          Conforming producers MUST emit only `controlled` or `uncontrolled` and
+          MUST NOT infer either value from controller configuration, process
+          presence or absence, or an earlier observation. Omit the attribute
+          when no definitive report exists. Consumers MUST treat every other
+          value as unknown.
+        examples: "controlled"
       - id: badger.host.scheduling
         type:
           members:

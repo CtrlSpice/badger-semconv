@@ -27,3 +27,14 @@ templates:
     filter: semconv_grouped_metrics
     application_mode: each
     file_name: "badger/metrics.md"
+
+  - template: profiles.md.j2
+    filter: >
+      .groups
+      | map(select(
+          .type == "attribute_group"
+          and (.id == "profile.badger" or (.id | startswith("profile.badger.")))
+        ))
+      | sort_by(.id)
+    application_mode: single
+    file_name: "badger/profiles.md"

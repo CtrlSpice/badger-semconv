@@ -1,0 +1,75 @@
+> import "_macros.j2" as macros <
+# Profiles: `badger`
+
+This document describes conventions for profiling the runtime installed on a
+badger.
+
+**Important:** Weaver v0.26.1 does not model Profiles as a first-class
+semantic-convention signal. The groups below are `attribute_group` definitions
+that Weaver validates. Their OTLP attachment locations are normative prose and
+are not enforced by Weaver.
+
+These conventions target the Alpha [OpenTelemetry Profiles data model] and the
+Development [OpenTelemetry Profiles semantic conventions].
+
+## Signal model
+
+A badger profile describes running code during the post-installation lifetime.
+Its interval MUST begin no earlier than the root `badger.session` span and MUST
+end no later than that span.
+
+Place the attributes of the `badger` entity in
+`ResourceProfiles.resource.attributes` and reference them from an `EntityRef`
+in `ResourceProfiles.resource.entity_refs`. The reference MUST use `badger` as
+its type and MUST list every identifying attribute declared by `entity.badger`
+in `id_keys`. It SHOULD list each present descriptive attribute in
+`description_keys`. Every listed key MUST exist in the containing Resource's
+attributes. Identifying attributes MUST NOT be copied to `Profile` or `Sample`
+attributes. `InstrumentationScope` SHOULD identify the profiling implementation.
+
+Use native OTLP fields rather than custom attributes for profile identity,
+timing, sample and period types, values, timestamps, stacks, and trace
+correlation:
+
+| Concept | OTLP representation |
+|---------|---------------------|
+| Profile identity | `Profile.profile_id` |
+| Profile interval | `Profile.time_unix_nano` and `Profile.duration_nano` |
+| Measured value and unit | `Profile.sample_type` |
+| Sampling period | `Profile.period_type` and `Profile.period` |
+| Values and observation times | `Sample.values` and `Sample.timestamps_unix_nano` |
+| Stack | `Sample.stack_index` and the Profiles dictionary |
+| Trace correlation | `Sample.link_index` and the referenced `Link` |
+
+When a sample corresponds to an active span, producers SHOULD use the native
+`Link` to record its trace and span identifiers. `badger.traceparent` remains an
+audit copy of physically carried context and MUST NOT replace that link.
+
+Executable build identifiers belong on `Mapping` as standard
+`process.executable.build_id.*` attributes. `badger.build_id` identifies the
+operating-system build installed on the entity and MUST NOT be used as an
+executable mapping identifier.
+
+> for group in ctx <
+## `{{ group.id }}`
+
+{{ group.brief | default("") | trim }}
+
+> if group.note <
+{{ group.note | trim }}
+
+> endif <
+> if group.attributes <
+### Attributes
+
+| Attribute | Type | Requirement Level | Example | Description |
+|-----------|------|-------------------|---------|-------------|
+> for attr in group.attributes | attribute_sort <
+| `{{ attr.name }}` | {{ macros.attribute_type(attr) }} | {{ macros.requirement_level(attr.requirement_level) }} | `{{ attr.examples }}` | {{ macros.attribute_description(attr) }} |
+> endfor <
+
+> endif <
+> endfor <
+[OpenTelemetry Profiles data model]: https://github.com/open-telemetry/opentelemetry-specification/blob/v1.60.0/specification/profiles/data-format.md
+[OpenTelemetry Profiles semantic conventions]: https://github.com/open-telemetry/semantic-conventions/blob/v1.44.0/docs/general/profiles.md
+{{ "\n" }}

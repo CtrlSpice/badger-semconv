@@ -1,12 +1,14 @@
 # Badger Semantic Conventions
 
 The badger registry describes one instrumented badger entity, its root session
-span, and the measurements needed to operate its enclosure. The detailed pages
-are generated from the registry model:
+span, the profiles collected during that session, and the measurements needed
+to operate its enclosure. The detailed pages are generated from the registry
+model:
 
 - [Entity](entities.md)
 - [Span](spans.md)
 - [Metrics](metrics.md)
+- [Profiles](profiles.md)
 
 ## Signal model
 
@@ -24,7 +26,8 @@ from acquisition through installation, is represented by
 
 A polled adapter smears timestamps by at least one millisecond. Such a session
 sets `badger.timing.degraded=true`; consumers may display its spans but must not
-render a profile from its sampled signals.
+render a profile from its sampled signals. The [Profiles](profiles.md) page
+defines the profile- and sample-level interpretation attributes.
 
 Scheduling discipline controls which analysis is defensible. Cooperative hosts
 cannot distinguish a task that failed to yield from a hung machine, so blocked

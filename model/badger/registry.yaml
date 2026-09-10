@@ -32,9 +32,17 @@ groups:
       - id: badger.instance.id
         type: string
         stability: development
-        brief: A unique identifier for one post-installation badger lifetime.
-        note: >-
-          Generate a new value for every session. A badger is consumed by a
+        brief: An identifier for one post-installation lifetime of a physical badger.
+        note: |-
+          The component that starts the root `badger.session` span MUST generate
+          this value once before the first signal for the session and retain it
+          for the complete post-installation lifetime. It MUST distribute the
+          same value to every observer of that runtime; observers MUST NOT
+          generate independent values. An observer that cannot obtain both
+          `badger.id` and `badger.instance.id` MUST NOT emit `entity.badger`.
+
+          The value MUST be unique within the associated `badger.id`; the pair
+          identifies one post-installation runtime. A badger is consumed by a
           session, so this value MUST NOT be used as a metric attribute.
         examples: "8f5c2f42-6ba1-4f79-89b8-c3e5b7d91a24"
       - id: badger.build_id

@@ -12,10 +12,11 @@ model:
 
 ## Signal model
 
-Every session consumes one badger. Badger identity therefore belongs to the
-`badger` entity and never to metric attributes: using `badger.instance.id` as a
-label would create one permanent series per session. Spans and metrics declare
-an entity association instead.
+Every session consumes one badger. `badger.id` and `badger.instance.id` jointly
+identify its post-installation runtime; `badger.namespace` and `badger.name` are
+descriptive aliases. Identity belongs to the `badger` entity and never to metric
+attributes: using `badger.instance.id` as a label would create one permanent
+series per session. Spans and metrics declare an entity association instead.
 
 The root `badger.session` span begins only after installation. Sampling is a
 head decision made when that span starts. The elapsed time before the span,

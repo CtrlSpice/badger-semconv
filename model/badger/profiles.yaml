@@ -14,10 +14,16 @@ groups:
       `badger.timing.degraded` MUST be true when the associated badger uses a
       polled adapter and MUST agree with the root `badger.session` span when both
       values are present. Consumers MUST refuse to render a degraded profile.
+      Producers conforming to this version MUST emit only `bus` or `polled` for
+      `badger.adapter.timing_class`. Consumers MUST treat a missing or
+      unrecognized timing class as degraded and refuse profile rendering.
 
       `badger.host.scheduling` MUST equal the associated badger entity value.
       Under cooperative scheduling, consumers MUST NOT present blocked time as
-      per-task attribution.
+      per-task attribution. Producers conforming to this version MUST emit only
+      `preemptive`, `message_passing`, or `cooperative`. For a profile measuring
+      blocked or off-CPU time, consumers MUST NOT present per-task attribution
+      when the scheduling value is missing or unrecognized.
     attributes:
       - ref: badger.timing.degraded
         requirement_level:

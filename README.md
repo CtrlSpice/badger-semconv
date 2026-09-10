@@ -36,6 +36,23 @@ attributes. It also defines head-sampling, degraded-timing, freshness,
 trace-context audit, scheduling, and decay requirements for the reanimated
 runtime.
 
+## Wildlife and containment
+
+> [!IMPORTANT]
+> This registry is technical documentation, not legal advice or authorization
+> to acquire, possess, modify, transport, reanimate, release, or dispose of
+> wildlife. Operators are responsible for identifying and complying with every
+> applicable national, Indigenous or Tribal, regional, and local requirement
+> before handling a specimen.
+
+Canada geese (*Branta canadensis*) are outside the supported specimen set unless
+possession and the intended use are affirmatively authorized in every
+applicable jurisdiction.[^canada-goose]
+
+A reanimated specimen MUST be treated as requiring containment that remains
+resource-intensive and operationally unreliable, independent of its separately
+assessed disruption potential and hazard severity.[^scp-keter]
+
 ## Development
 
 Install [Weaver v0.26.1] and run:
@@ -60,5 +77,41 @@ source of truth until that package is published.
 
 ## License
 
-This repository is licensed under the [Apache License 2.0](LICENSE). The linked
-article remains copyright Lucy A. Snyder.
+Except for quotations identified by their own attribution, this repository is
+licensed under the [Apache License 2.0](LICENSE). The linked article remains
+copyright Lucy A. Snyder.
+
+[^canada-goose]: The Government of Canada's protected-bird lists identify
+    *Branta canadensis* as **Canada Goose** in
+    [English](https://www.canada.ca/en/environment-climate-change/services/migratory-birds-legal-protection/list.html)
+    and **Bernache du Canada** in
+    [French](https://www.canada.ca/fr/environnement-changement-climatique/services/protection-legale-oiseaux-migrateurs/liste.html).
+    Section 5 of the
+    [*Migratory Birds Convention Act, 1994*](https://laws-lois.justice.gc.ca/eng/acts/M-7.01/section-5.html)
+    provides: "Except as authorized by the regulations, no person shall,
+    without lawful excuse, (a) be in possession of a migratory bird or nest;"
+    The official French text,
+    [*Loi de 1994 sur la convention concernant les oiseaux migrateurs*](https://laws-lois.justice.gc.ca/fra/lois/M-7.01/section-5.html),
+    provides: "Sauf conformément aux règlements, nul ne peut, sans excuse
+    valable : a) avoir en sa possession un oiseau migrateur ou son nid;"
+    Section 11 of the
+    [*Migratory Birds Regulations, 2022*](https://laws-lois.justice.gc.ca/eng/regulations/SOR-2022-105/section-11.html)
+    and its official French text,
+    [*Règlement sur les oiseaux migrateurs (2022)*](https://laws-lois.justice.gc.ca/fra/reglements/DORS-2022-105/section-11.html)
+    allow possession of a found-dead migratory bird without a permit only
+    temporarily and only for lawful disposal, delivery to a laboratory for
+    analysis as soon as circumstances permit, or laboratory analysis. Other
+    wildlife, land-access, public-health, transport, and disposal rules may
+    apply.
+
+[^scp-keter]: Under the modern Anomaly Classification System, Keter remains a
+    containment class; disruption and risk are assessed separately.
+    "Keter-class SCP objects are anomalies that are exceedingly difficult to
+    contain consistently or reliably, with containment procedures often being
+    extensive and complex. [...] A Keter SCP does not mean the SCP is
+    dangerous, just that it is simply very difficult or costly to contain."
+    Quoted from ["Object Classes"](https://scp-wiki.wikidot.com/object-classes),
+    SCP Foundation Wiki, by "Aelanna" (author) and "MayD" (rewrite author), per
+    [SCPPER](https://scpper.com/page/22064647). The quotation remains licensed
+    under [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/), not
+    Apache-2.0.

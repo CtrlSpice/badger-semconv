@@ -100,4 +100,3 @@ after another state.
 
 [OpenTelemetry Profiles data model]: https://github.com/open-telemetry/opentelemetry-specification/blob/v1.60.0/specification/profiles/data-format.md
 [OpenTelemetry Profiles semantic conventions]: https://github.com/open-telemetry/semantic-conventions/blob/v1.44.0/docs/general/profiles.md
-
